@@ -59272,11 +59272,12 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
       message: [],
       user: [],
       color: []
-    }
+    },
+    typing: ''
   },
   watch: {
     message: function message() {
-      window.Echo.join('chat').whisper('typing', {
+      window.Echo["private"]('chat').whisper('typing', {
         name: this.message
       });
     }
@@ -59303,12 +59304,18 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
   mounted: function mounted() {
     var _this2 = this;
 
-    window.Echo.channel('chat').listen('ChatEvent', function (e) {
+    window.Echo["private"]('chat').listen('ChatEvent', function (e) {
       _this2.chat.message.push(e.message);
 
       _this2.chat.user.push(e.user);
 
       _this2.chat.color.push('warning');
+    }).listenForWhisper('typing', function (e) {
+      if (e.name !== '') {
+        _this2.typing = 'Typing...';
+      } else {
+        _this2.typing = '';
+      }
     });
   }
 });
@@ -59326,11 +59333,6 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var laravel_echo__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! laravel-echo */ "./node_modules/laravel-echo/dist/echo.js");
 window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/**
- * We'll load jQuery and the Bootstrap jQuery plugin which provides support
- * for JavaScript based Bootstrap features such as modals and tabs. This
- * code may be modified to fit the specific needs of your application.
- */
 
 try {
   window.Popper = __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js")["default"];
@@ -59338,27 +59340,16 @@ try {
 
   __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
 } catch (e) {}
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
-
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
-
 
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
   key: '167de64f4fbd3b7d931e',
-  cluster: 'ap2'
+  cluster: 'ap2',
+  authEndpoint: 'http://localhost:8080/realtime_chatapp/public/broadcasting/auth'
 });
 
 /***/ }),

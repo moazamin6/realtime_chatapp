@@ -24,11 +24,12 @@ const app = new Vue({
              message: [],
              user: [],
              color: [],
-          }
+          },
+          typing: ''
        },
        watch: {
           message() {
-             window.Echo.join('chat')
+             window.Echo.private('chat')
                  .whisper('typing', {
                     name: this.message
                  });
@@ -54,17 +55,24 @@ const app = new Vue({
 
                  }
               }
-           }
-       ,
+           },
 
        mounted() {
 
-          window.Echo.channel('chat')
+          window.Echo.private('chat')
               .listen('ChatEvent', (e) => {
                  this.chat.message.push(e.message);
                  this.chat.user.push(e.user);
                  this.chat.color.push('warning');
-              });
+              })
+              .listenForWhisper('typing', (e) => {
+
+                 if (e.name !== '') {
+                    this.typing = 'Typing...';
+                 } else {
+                    this.typing = '';
+                 }
+              })
        }
     })
 ;
