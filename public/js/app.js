@@ -59268,6 +59268,7 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
   el: '#app',
   data: {
     message: '',
+    onlineUsers: [],
     chat: {
       message: [],
       user: [],
@@ -59316,6 +59317,17 @@ var app = new vue__WEBPACK_IMPORTED_MODULE_1___default.a({
       } else {
         _this2.typing = '';
       }
+    });
+    window.Echo.join('chat').here(function (users) {
+      _this2.onlineUsers = users; // console.log(users);
+    }).joining(function (user) {
+      _this2.onlineUsers.push(user); // console.log(user.name + " joined");
+
+    }).leaving(function (user) {
+      var index = _this2.onlineUsers.indexOf(user.name);
+
+      _this2.onlineUsers.splice(index, 1); // console.log(user.name + " leaved");
+
     });
   }
 });

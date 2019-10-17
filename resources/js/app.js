@@ -20,6 +20,7 @@ const app = new Vue({
 
        data: {
           message: '',
+          onlineUsers: [],
           chat: {
              message: [],
              user: [],
@@ -72,7 +73,24 @@ const app = new Vue({
                  } else {
                     this.typing = '';
                  }
+              });
+          window.Echo.join('chat')
+              .here((users) => {
+                 this.onlineUsers = users;
+                 // console.log(users);
               })
+              .joining((user) => {
+
+                 this.onlineUsers.push(user);
+                 // console.log(user.name + " joined");
+              })
+              .leaving((user) => {
+
+                 let index = this.onlineUsers.indexOf(user.name);
+                 this.onlineUsers.splice(index, 1);
+                 // console.log(user.name + " leaved");
+              })
+
        }
     })
 ;
