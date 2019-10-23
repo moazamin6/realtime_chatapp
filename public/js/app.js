@@ -59359,8 +59359,11 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 window.Pusher = __webpack_require__(/*! pusher-js */ "./node_modules/pusher-js/dist/web/pusher.js");
 window.Echo = new laravel_echo__WEBPACK_IMPORTED_MODULE_0__["default"]({
   broadcaster: 'pusher',
-  key: '167de64f4fbd3b7d931e',
-  cluster: 'ap2',
+  key: "abcdefghi",
+  cluster: "mt1",
+  wsHost: window.location.hostname,
+  wsPort: 6001,
+  disableStats: true,
   authEndpoint: 'http://localhost:8080/realtime_chatapp/public/broadcasting/auth'
 });
 

@@ -46,6 +46,7 @@ const app = new Vue({
                     axios.post('/realtime_chatapp/public/send', {
                        message: this.message
                     })
+
                         .then(response => {
                            //console.log(response);
                            this.message = '';

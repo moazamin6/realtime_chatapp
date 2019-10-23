@@ -20,7 +20,10 @@ window.Pusher = require('pusher-js');
 
 window.Echo = new Echo({
    broadcaster: 'pusher',
-   key: '167de64f4fbd3b7d931e',
-   cluster: 'ap2',
+   key: process.env.MIX_PUSHER_APP_KEY,
+   cluster: process.env.MIX_PUSHER_APP_CLUSTER,
+   wsHost: window.location.hostname,
+   wsPort: 6001,
+   disableStats: true,
    authEndpoint: 'http://localhost:8080/realtime_chatapp/public/broadcasting/auth'
 });
